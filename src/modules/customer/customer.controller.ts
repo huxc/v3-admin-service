@@ -21,23 +21,32 @@ export class CustomerController {
     return this.customerService.create(createCustomerDto);
   }
 
+  @Post('savelist')
+  createMany(@Body() createUserDtos: CustomerDto[]) {
+    createUserDtos.forEach((i) => {
+      i.created_at = new Date(i.created_at).toISOString();
+      i.updated_at = new Date(i.updated_at).toISOString();
+    });
+    return this.customerService.createMany(createUserDtos);
+  }
+
   @Post('list')
   async findAll(@Body() params: SeachDto) {
     return this.customerService.findAll(params);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.customerService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.customerService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCustomerDto: CustomerDto) {
-    return this.customerService.update(+id, updateCustomerDto);
+  update(@Param('id') id: number, @Body() updateCustomerDto: CustomerDto) {
+    return this.customerService.update(id, updateCustomerDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.customerService.remove(+id);
+  @Delete()
+  remove(@Body() ids: number[]) {
+    return this.customerService.remove(ids);
   }
 }

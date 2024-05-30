@@ -10,27 +10,47 @@ const prisma = new PrismaClient().$extends(pagination());
 @Injectable()
 export class CustomerService {
   async create(createCustomerDto: customerDto) {
-    const { created_at, updated_at } = createCustomerDto;
-    createCustomerDto.created_at = new Date(created_at);
-    createCustomerDto.updated_at = new Date(updated_at);
+    Object.assign(createCustomerDto, {
+      created_at: new Date().toISOString(),
+    });
     return await prisma.customer.create({ data: createCustomerDto });
+  }
+
+  async createMany(createUserDtos: customerDto[]) {
+    return await prisma.customer.createMany({ data: createUserDtos });
   }
 
   async findAll(params: SeachDto) {
     const { pageSize, pageNum, ...param } = params;
-    const [list, paginater] = await prisma.customer.paginate().withPages({
-      limit: pageSize,
-      page: pageNum,
-      includePageCount: true,
-    });
+
+    const [list, paginater] = await prisma.customer
+      .paginate({
+        where: {
+          age: param.age,
+          gender: param.gender,
+          name: { contains: param.name },
+          id_card: { contains: param.idCard },
+          ...(param.createdStartAt &&
+            param.createdEndAt && {
+              created_at: {
+                gte: param.createdStartAt,
+                lt: param.createdEndAt,
+              },
+            }),
+        },
+        orderBy: [{ id: 'desc' }],
+      })
+      .withPages({
+        limit: pageSize,
+        page: pageNum,
+        includePageCount: true,
+      });
     return { list, ...paginater };
   }
 
   async findOne(id: number) {
     return await prisma.customer.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
     });
   }
 
@@ -41,9 +61,13 @@ export class CustomerService {
     });
   }
 
-  async remove(id: number) {
+  async remove(ids: number[]) {
     return await prisma.customer.deleteMany({
-      where: { id },
+      where: {
+        id: {
+          in: ids,
+        },
+      },
     });
   }
 }

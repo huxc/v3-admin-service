@@ -21,6 +21,9 @@ export class users {
   @ApiPropertyOptional({ type: Date })
   updated_at?: Date;
 
+  @ApiPropertyOptional({ type: String })
+  nickname?: string;
+
   @ApiProperty({ isArray: true, type: () => user_permissions })
   user_permissions: user_permissions[];
 

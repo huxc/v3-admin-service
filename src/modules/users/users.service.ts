@@ -14,6 +14,13 @@ export class UsersService {
   async login(loginUser: LoginDto) {
     const user = await prisma.users.findFirst({
       where: { ...loginUser },
+      select: {
+        user_id: true,
+        username: true,
+        email: true,
+        nickname: true,
+        created_at: true,
+      },
     });
     if (user) {
       const token = this.jwtService.sign(user);

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, Length, IsInt } from 'class-validator';
+import { IsNotEmpty, IsInt, IsOptional } from 'class-validator';
 
 export class SeachDto {
   @IsNotEmpty({ message: '页码为不能空' })
@@ -9,11 +9,17 @@ export class SeachDto {
   @IsInt({ message: '请输入整数页数' })
   pageSize: number;
 
-  idCard: string;
+  gender?: number;
 
-  nickname: string;
+  @IsOptional()
+  @IsInt()
+  age?: number;
 
-  createdStartAt: string;
+  idCard?: string;
 
-  createdEndAt: string;
+  name?: string;
+
+  createdStartAt?: string;
+
+  createdEndAt?: string;
 }
