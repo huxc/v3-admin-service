@@ -31,8 +31,8 @@ export class customer {
   avatar?: string;
 
   @ApiPropertyOptional({ type: Date })
-  created_at?: string;
+  created_at?: Date;
 
   @ApiPropertyOptional({ type: Date })
-  updated_at?: string;
+  updated_at?: Date;
 }

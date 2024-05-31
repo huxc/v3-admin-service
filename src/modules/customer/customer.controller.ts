@@ -23,10 +23,6 @@ export class CustomerController {
 
   @Post('savelist')
   createMany(@Body() createUserDtos: CustomerDto[]) {
-    createUserDtos.forEach((i) => {
-      i.created_at = new Date(i.created_at).toISOString();
-      i.updated_at = new Date(i.updated_at).toISOString();
-    });
     return this.customerService.createMany(createUserDtos);
   }
 

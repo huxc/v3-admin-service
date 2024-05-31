@@ -21,7 +21,8 @@ async function bootstrap() {
   );
 
   // 设置静态资源目录
-  app.useStaticAssets(join(__dirname, '..', 'static'));
+  //   app.useStaticAssets(join(__dirname, '..', 'static'));
+  app.useStaticAssets('static');
 
   await app.listen(3000);
 }
