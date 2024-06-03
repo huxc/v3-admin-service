@@ -17,6 +17,10 @@ export class CustomerService {
   }
 
   async createMany(createUserDtos: customerDto[]) {
+    for (let i = 0; i < createUserDtos.length; i++) {
+      createUserDtos[i].updated_at = new Date(createUserDtos[i].updated_at);
+      createUserDtos[i].created_at = new Date(createUserDtos[i].created_at);
+    }
     return await prisma.customer.createMany({ data: createUserDtos });
   }
 

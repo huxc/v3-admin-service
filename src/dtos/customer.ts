@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt } from 'class-validator';
+
 export class customer {
   @ApiProperty({ type: Number })
   id: number;
@@ -8,11 +8,9 @@ export class customer {
   name: string;
 
   @ApiProperty({ type: Number })
-  @IsInt()
   gender: number;
 
   @ApiProperty({ type: Number })
-  @IsInt()
   age: number;
 
   @ApiProperty({ type: String })
