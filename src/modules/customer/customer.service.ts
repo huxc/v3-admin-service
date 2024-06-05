@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { customer as CustomerDto } from '../../dtos/customer';
+import { parse, format } from 'date-fns';
 import { PrismaClient } from '@prisma/client';
 import { pagination } from 'prisma-extension-pagination';
 import { SeachDto } from './dto/seachDto';
@@ -26,7 +27,9 @@ export class CustomerService {
 
   async findAll(params: SeachDto) {
     const { pageSize, pageNum, ...param } = params;
-
+    prisma.customer.findMany({
+      select: {},
+    });
     const [list, paginater] = await prisma.customer
       .paginate({
         where: {
@@ -37,8 +40,8 @@ export class CustomerService {
           ...(param.createdStartAt &&
             param.createdEndAt && {
               created_at: {
-                gte: param.createdStartAt,
-                lt: param.createdEndAt,
+                gte: new Date(param.createdStartAt),
+                lt: new Date(param.createdEndAt),
               },
             }),
         },
@@ -49,6 +52,9 @@ export class CustomerService {
         page: pageNum,
         includePageCount: true,
       });
+
+    fmtDate(list);
+
     return { list, ...paginater };
   }
 
@@ -73,5 +79,20 @@ export class CustomerService {
         },
       },
     });
+  }
+}
+
+function fmtDate(list: customerDto[]): void {
+  for (const item of list) {
+    const createdAt: unknown = format(
+      new Date(item.created_at),
+      'yyyy-MM-dd HH:mm:ss',
+    );
+    const updatedAt: unknown = format(
+      new Date(item.updated_at),
+      'yyyy-MM-dd HH:mm:ss',
+    );
+    item.created_at = createdAt as Date;
+    item.updated_at = updatedAt as Date;
   }
 }

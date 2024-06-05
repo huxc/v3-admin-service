@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { LoginDto } from './dots/LoginDto';
 import { Public } from '../../common/decorator/public.decorator';
@@ -15,7 +15,7 @@ export class UsersController {
   }
 
   @Get('authcodes')
-  getAuthCodes() {
-    return this.usersService.getAuthCodes();
+  getAuthCodes(@Request() req) {
+    return this.usersService.getAuthCodes(req.user);
   }
 }

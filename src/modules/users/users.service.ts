@@ -34,7 +34,8 @@ export class UsersService {
   }
 
   // 获取权限码
-  getAuthCodes() {
+  getAuthCodes(user: UsersDto) {
+    console.log('🚀 ~ UsersService ~ getAuthCodes ~ user:', user.user_id);
     return 'codes';
   }
 }

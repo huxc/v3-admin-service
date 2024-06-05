@@ -1,3 +1,4 @@
+import { Type, Transform } from 'class-transformer';
 import { IsNotEmpty, IsInt, IsOptional } from 'class-validator';
 
 export class SeachDto {
@@ -9,6 +10,8 @@ export class SeachDto {
   @IsInt({ message: '请输入整数页数' })
   pageSize: number;
 
+  @IsOptional()
+  @IsInt()
   gender?: number;
 
   @IsOptional()

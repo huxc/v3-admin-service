@@ -11,6 +11,7 @@ import {
 import { CustomerService } from './customer.service';
 import { customer as CustomerDto } from '../../dtos/customer';
 import { SeachDto } from './dto/seachDto';
+import { get } from 'http';
 
 @Controller('customer')
 export class CustomerController {
@@ -28,6 +29,11 @@ export class CustomerController {
 
   @Post('list')
   async findAll(@Body() params: SeachDto) {
+    return this.customerService.findAll(params);
+  }
+
+  @Get()
+  async findList(@Query() params: SeachDto) {
     return this.customerService.findAll(params);
   }
 
