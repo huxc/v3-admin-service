@@ -14,6 +14,13 @@ export class UsersController {
     return this.usersService.login(loginDto);
   }
 
+  @Public()
+  @Post('refresh')
+  async refresh(@Body('refreshToken') refreshToken: string) {
+    console.log('🚀 ~ UsersController ~ refresh ~ refreshToken:', refreshToken);
+    return this.usersService.refresh(refreshToken);
+  }
+
   @Get('authcodes')
   getAuthCodes(@Request() req) {
     return this.usersService.getAuthCodes(req.user);

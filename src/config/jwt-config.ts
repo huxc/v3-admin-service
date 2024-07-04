@@ -2,6 +2,8 @@ export const jwtConfig = {
   global: true,
   secret: 'huxc',
   signOptions: {
-    expiresIn: '7d',
+    expiresIn: '1d',
   },
 };
+
+export const refExpiresIn = '3d';
